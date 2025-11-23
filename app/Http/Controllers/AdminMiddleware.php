@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+
+class AdminMiddleware
+{
+    public function handle(Request $request, Closure $next): mixed
+    {
+        abort_unless(boolean: $request->user()?->isAdmin(), code: 403);
+        return $next($request);
+    }
+}
