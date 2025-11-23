@@ -74,7 +74,16 @@ class Projects extends Component
     public function render()
     {
         return view('livewire.admin.projects', [
-            'projects' => Project::orderByDesc('is_active')
+            'projects' => Project::query()
+                ->with([
+                    'timeEntries' => function ($q) {
+                        $q->latest('date')
+                        ->latest('id')
+                        ->with('user'); // show who logged it
+                    }
+                ])
+                ->withCount('timeEntries')
+                ->orderByDesc('is_active')
                 ->orderBy('name')
                 ->get(),
         ]);

@@ -18,7 +18,7 @@ A simple tool for booking time spent on projects. This project is a homework for
 
 - **Time Entries**: A form, where all users can assign date time, a project, time spent on a task, and can add description on of the task.
 
-- **Projects**: Admins can create and modify projects by renaming and changing status of the project.
+- **Projects**: Admins can create and modify projects by renaming and changing status of the project. It also lists all time entries.
 
 - **Monthly Reports**: Admins can collect aggregated monthly reports. Per project, per user, as a total sum of overall time invested in all projects on a monthly basis. Reports can be deleted or re-generated.
 
@@ -36,7 +36,7 @@ Using MySQL through XAMPP. Latest schema is available on phpMyAdmin.
 
 ## Test
 
-Love yourself. Sleep withot stress.
+Love yourself. Sleep without stress.
 
 ### Unit Test
 
@@ -78,7 +78,7 @@ Be not afraid to reach out with ideas. Even if you can't make it come true on yo
 
 - [x] Redirect registration page to time entries
 
-- [ ] List assigned time entries for projects
+- [x] List assigned time entries for projects
 
 - [ ] Create unit tests
 

@@ -4,51 +4,20 @@
 
 
 /* --- README Markdown styling fallback (works with or without typography plugin) --- */
-.readme-markdown h1 {
-    @apply text-3xl font-extrabold mt-6 mb-3 text-gray-900;
-}
-.readme-markdown h2 {
-    @apply text-2xl font-bold mt-5 mb-2 text-gray-900;
-}
-.readme-markdown h3 {
-    @apply text-xl font-semibold mt-4 mb-2 text-gray-900;
-}
-.readme-markdown p {
-    @apply text-base leading-relaxed my-3 text-gray-800;
-}
-.readme-markdown ul {
-    @apply list-disc pl-6 my-3;
-}
-.readme-markdown ol {
-    @apply list-decimal pl-6 my-3;
-}
-.readme-markdown li {
-    @apply my-1;
-}
-.readme-markdown a {
-    @apply text-blue-600 underline hover:text-blue-800;
-}
-.readme-markdown code {
-    @apply bg-gray-100 px-1 py-0.5 rounded text-sm;
-}
-.readme-markdown pre {
-    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm my-4;
-}
-.readme-markdown pre code {
-    @apply bg-transparent p-0 text-gray-100;
-}
-.readme-markdown blockquote {
-    @apply border-l-4 border-gray-300 pl-4 italic text-gray-700 my-4;
-}
-.readme-markdown table {
-    @apply w-full border-collapse my-4 text-sm;
-}
-.readme-markdown th, .readme-markdown td {
-    @apply border border-gray-300 px-3 py-2;
-}
-.readme-markdown th {
-    @apply bg-gray-100 font-semibold;
-}
-.readme-markdown img {
-    @apply max-w-full rounded-lg my-4;
-}
+.readme-markdown h1 { font-size: 1.875rem; font-weight: 800; margin: 1.5rem 0 0.75rem; color:#111827; }
+.readme-markdown h2 { font-size: 1.5rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color:#111827; }
+.readme-markdown h3 { font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; color:#111827; }
+.readme-markdown p  { font-size: 1rem; line-height: 1.7; margin: 0.75rem 0; color:#1f2937; }
+.readme-markdown ul { list-style: disc; padding-left: 1.5rem; margin: 0.75rem 0; }
+.readme-markdown ol { list-style: decimal; padding-left: 1.5rem; margin: 0.75rem 0; }
+.readme-markdown li { margin: 0.25rem 0; }
+.readme-markdown a  { color:#2563eb; text-decoration: underline; }
+.readme-markdown a:hover { color:#1d4ed8; }
+.readme-markdown code { background:#f3f4f6; padding:0.125rem 0.25rem; border-radius:0.25rem; font-size:0.875rem; }
+.readme-markdown pre { background:#111827; color:#f9fafb; padding:1rem; border-radius:0.5rem; overflow-x:auto; font-size:0.875rem; margin:1rem 0; }
+.readme-markdown pre code { background:transparent; padding:0; color:inherit; }
+.readme-markdown blockquote { border-left:4px solid #d1d5db; padding-left:1rem; font-style:italic; color:#374151; margin:1rem 0; }
+.readme-markdown table { width:100%; border-collapse: collapse; margin:1rem 0; font-size:0.875rem; }
+.readme-markdown th, .readme-markdown td { border:1px solid #d1d5db; padding:0.5rem 0.75rem; }
+.readme-markdown th { background:#f3f4f6; font-weight:600; }
+.readme-markdown img { max-width:100%; border-radius:0.5rem; margin:1rem 0; }

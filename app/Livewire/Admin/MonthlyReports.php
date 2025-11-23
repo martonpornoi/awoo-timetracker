@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\MonthlyReport;
 use App\Models\TimeEntry;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class MonthlyReports extends Component
@@ -78,27 +79,45 @@ class MonthlyReports extends Component
                 'status' => $this->report?->status ?? 'open', // keep status if already exists
             ]
         );
-
-
         $this->snapshot = $snapshot;
-
-        // Lock the month? No – admin must explicitly click “Close”
     }
 
-    /** Close / lock the report */
+    /** Close / lock the report + entries */
     public function close()
     {
         if (!$this->report) return;
 
-        $this->report->update(['status' => 'closed']);
+        DB::transaction(function () {
+            // 1) Close report
+            $this->report->update(['status' => 'closed']);
+
+            // 2) Lock all entries in that month that aren't locked yet
+            $start = Carbon::parse($this->report->month)->startOfMonth()->toDateString();
+            $end   = Carbon::parse($this->report->month)->endOfMonth()->toDateString();
+
+            TimeEntry::whereBetween('date', [$start, $end])
+                ->whereNull('locked_by_report_id')
+                ->update(['locked_by_report_id' => $this->report->id]);
+        });
+
+        $this->loadReport();
     }
 
-    /** Re-open the report */
+    /** Re-open the report + unlock entries locked by this report */
     public function reopen()
     {
         if (!$this->report) return;
 
-        $this->report->update(['status' => 'open']);
+        DB::transaction(function () {
+            // 1) Open report
+            $this->report->update(['status' => 'open']);
+
+            // 2) Unlock only entries that were locked by THIS report
+            TimeEntry::where('locked_by_report_id', $this->report->id)
+                ->update(['locked_by_report_id' => null]);
+        });
+
+        $this->loadReport();
     }
 
     public function updatedMonth()
