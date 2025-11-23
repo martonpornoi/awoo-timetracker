@@ -74,9 +74,11 @@ Be not afraid to reach out with ideas. Even if you can't make it come true on yo
 
 ## Todo
 
-- [ ] Create landing page
+- [x] Create landing page
 
-- [ ] Redirect registration page to time entries
+- [x] Redirect registration page to time entries
+
+- [ ] List assigned time entries for projects
 
 - [ ] Create unit tests
 
@@ -86,6 +88,6 @@ Be not afraid to reach out with ideas. Even if you can't make it come true on yo
 
 - [ ] Automated workflows on GitHub
 
-- [ ] Update README documentation
+- [ ] Deployment rehearsal and documentation
 
 - [ ] Last refactor scan

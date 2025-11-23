@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
-Route::view('/', 'welcome');
+Route::view('/', 'welcome')->name('profile');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
