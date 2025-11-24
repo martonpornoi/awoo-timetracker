@@ -89,10 +89,4 @@ class Projects extends Component
         ]);
     }
 
-    public int $pingCount = 0;
-
-    public function ping(): void
-    {
-        $this->pingCount++;
-    }
 }

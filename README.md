@@ -194,13 +194,6 @@ This makes tests fast (in‑memory DB) and isolated (fresh DB every run), withou
 * `close()` locks all entries for that month.
 * `reopen()` unlocks only entries locked by that report.
 
-**5. CSV Export**
-
-* Admins can download exports.
-* Missing or unauthorized access returns proper status.
-
----
-
 #### Factories
 
 Factories make test data simple:

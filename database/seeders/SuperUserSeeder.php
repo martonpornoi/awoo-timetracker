@@ -59,20 +59,26 @@ class SuperUserSeeder extends Seeder
         });
 
         $allUsers = $users->merge($userAccounts);
-        $currentMonth = Carbon::now()->startOfMonth();
+        $months = collect([
+            Carbon::now()->startOfMonth(),
+            Carbon::now()->subMonth()->startOfMonth(),
+            Carbon::now()->subMonths(2)->startOfMonth(),
+        ]);
 
-        foreach (range(1, 30) as $day) {
-            $date = $currentMonth->copy()->addDays(($day - 1) % 28);
-            $entryUser = $allUsers->random();
-            $project = $projects->random();
+        $months->each(function (Carbon $month) use ($allUsers, $projects) {
+            foreach (range(1, 15) as $day) {
+                $date = $month->copy()->addDays(($day - 1) % $month->daysInMonth);
+                $entryUser = $allUsers->random();
+                $project = $projects->random();
 
-            TimeEntry::factory()->create([
-                'user_id' => $entryUser->id,
-                'project_id' => $project->id,
-                'date' => $date->toDateString(),
-                'minutes' => collect([30, 45, 60, 90, 120])->random(),
-                'description' => sprintf('Worked on %s tasks', $project->name),
-            ]);
-        }
+                TimeEntry::factory()->create([
+                    'user_id' => $entryUser->id,
+                    'project_id' => $project->id,
+                    'date' => $date->toDateString(),
+                    'minutes' => collect([30, 45, 60, 90, 120])->random(),
+                    'description' => sprintf('Worked on %s tasks', $project->name),
+                ]);
+            }
+        });
     }
 }
