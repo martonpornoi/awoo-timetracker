@@ -245,12 +245,6 @@ Be not afraid to reach out with ideas. Even if you can't make it come true on yo
 
 ## Todo
 
-- [x] Create unit/feature tests
+- Deployment rehearsal and DB documentation
 
-- [x] Create integration tests
-
-- [ ] Automated workflows on GitHub
-
-- [ ] Deployment rehearsal and DB documentation
-
-- [ ] Last refactor scan
+- Last refactor scan
