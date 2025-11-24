@@ -32,8 +32,10 @@ new #[Layout('layouts.guest')] class extends Component
 
         Auth::login($user);
 
-        // match Breeze login behavior
-        request()->session()->regenerate();
+        // match Breeze login behavior when a session exists (Livewire tests may omit it)
+        if (request()->hasSession()) {
+            request()->session()->regenerate();
+        }
 
         // force a real HTTP redirect (not SPA navigate)
         return redirect()->route('timesheet');

@@ -31,4 +31,22 @@ class TimeParserTest extends TestCase
     {
         $this->assertSame(135, TimeParser::parse('2,25')['rounded_minutes']);
     }
+
+    /**
+     * Parser must throw when the user submits an empty string.
+     */
+    public function test_rejects_empty_input(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        TimeParser::parse('');
+    }
+
+    /**
+     * H:MM inputs with minutes >= 60 should be rejected immediately.
+     */
+    public function test_rejects_invalid_hhmm_minutes(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        TimeParser::parse('1:75');
+    }
 }

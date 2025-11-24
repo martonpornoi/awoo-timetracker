@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Awoo – TimeTracker</title>
+    <title>Awoo TimeTracker</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -34,7 +34,7 @@
         {{-- HEADER --}}
         <div class="text-center mb-10">
             <h1 class="text-4xl font-extrabold text-gray-900 tracking-wide">
-                Awoo – TimeTracker
+                Awoo TimeTracker
             </h1>
             <p class="text-gray-600 mt-2 text-lg">
                 Simple and fast timesheet tracking for your projects.

@@ -14,7 +14,7 @@ A simple tool for booking time spent on projects. This project is a homework for
 
 ### Tools
 
-- **Login System**: A simple add-on by Laravel, where users can add e-mail, password, and username. Since the task is not built around this module, integrating SMTP servers will not happen here.
+- **Login System**: An add-on by Laravel, where users can add e-mail, password, and username. Since the task is not built around this module, integrating an SMTP server is not happening.
 
 - **Time Entries**: A form, where all users can assign date time, a project, time spent on a task, and can add description on of the task.
 
@@ -22,17 +22,95 @@ A simple tool for booking time spent on projects. This project is a homework for
 
 - **Monthly Reports**: Admins can collect aggregated monthly reports. Per project, per user, as a total sum of overall time invested in all projects on a monthly basis. Reports can be deleted or re-generated.
 
-## Install
+## Setup
 
-### Windows
+### Git
 
-### OS X
+https://git-scm.com/install/windows
 
-### Ubuntu
+---
 
-## Database
+### XAMPP (PHP 8.2 versions are preferred)
 
-Using MySQL through XAMPP. Latest schema is available on phpMyAdmin.
+https://www.apachefriends.org/download.html
+
+Make sure it's installs at C:\xampp
+
+Inside `C:\xampp\php\php.ini` enable **extension=zip** or **extension=php_zip.dll**
+
+---
+
+### Composer
+
+https://getcomposer.org/Composer-Setup.exe
+
+When asked, select PHP executable: `C:\xampp\php\php.exe`
+
+---
+
+### Node.js + npm (LTS)
+
+https://nodejs.org/en/download
+
+---
+
+### MySQL
+
+Open .env in project and update these lines or add them:
+
+```makefile
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=timetracker
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+### Checklist
+
+Open PowerShell
+
+```powershell
+# --- Check if you have everything installed
+
+php -v
+composer -V
+node -v
+npm -v
+
+# --- Further preparations that could come in handy
+
+# 0) Go to root folder of the repository
+cd ./awoo-timetracker
+
+# 1) Start Apache and MySQL on XAMPP control panel
+
+# 2) Install Livewire (also Alpine.js, required for Livewire)
+composer require livewire/livewire
+npm install alpinejs
+npm install
+
+# 3) Test DB connection
+php artisan migrate
+
+# 4) Install Breeze (for Auth UI)
+composer require laravel/breeze --dev
+php artisan breeze:install livewire
+npm install
+
+# --- Everyday runs would require 3 things
+
+# 1) Start Apache and MySQL on XAMPP control panel
+
+# 2) Terminal 1
+npm run dev
+
+# 3) Terminal 2
+php artisan serve
+```
 
 ## Test
 
@@ -40,9 +118,86 @@ Love yourself. Sleep without stress.
 
 ### Unit Test
 
+This project uses Laravel’s built-in **PHPUnit** test framework. Tests focus on the core workflows of the TimeTracker system.
+
+---
+
+#### Running Tests
+
+```bash
+# run all tests
+php artisan test
+# run a test file
+php artisan test tests/Feature/AdminProjectsTest.php
+# run a filtered test
+php artisan test --filter="locks entries when month is closed"
+```
+
+Laravel uses `.env.testing` when running tests. Your normal `.env` (MySQL, database sessions, queues, etc.) is **not** used.
+
+Create a `.env.testing` file to override only what tests need. Recommended setup:
+
+```sh
+DB_CONNECTION=sqlite
+DB_DATABASE=:memory:
+CACHE_DRIVER=array
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=array
+```
+
+This makes tests fast (in‑memory DB) and isolated (fresh DB every run), without touching local MySQL config.
+
+---
+
+#### What Is Tested
+
+**1. Authorization**
+
+* Non-admins are blocked from `/admin/*`.
+
+**2. Project Management**
+
+* Create, edit, and archive via Livewire.
+* Projects sorted with active ones first.
+
+**3. Time Entries**
+
+* Users can create entries for active projects.
+* Validation rules (minutes, date, project).
+* Locked entries cannot be edited or deleted.
+
+**4. Monthly Reports**
+
+* `generate()` aggregates minutes correctly.
+* `close()` locks all entries for that month.
+* `reopen()` unlocks only entries locked by that report.
+
+**5. CSV Export**
+
+* Admins can download exports.
+* Missing or unauthorized access returns proper status.
+
+---
+
+#### Factories
+
+Factories make test data simple:
+
+```php
+User::factory()->admin()->create();
+Project::factory()->create();
+TimeEntry::factory()->create([
+    'project_id' => $project->id,
+]);
+```
+
 ### Integration Test
 
+TBA
+
 ### Smoke Test
+
+TBA
 
 ## Contribution
 
@@ -74,20 +229,12 @@ Be not afraid to reach out with ideas. Even if you can't make it come true on yo
 
 ## Todo
 
-- [x] Create landing page
-
-- [x] Redirect registration page to time entries
-
-- [x] List assigned time entries for projects
-
-- [ ] Create unit tests
+- [x] Create unit tests
 
 - [ ] Create integration tests
 
-- [ ] Create smoke tests
-
 - [ ] Automated workflows on GitHub
 
-- [ ] Deployment rehearsal and documentation
+- [ ] Deployment rehearsal and DB documentation
 
 - [ ] Last refactor scan

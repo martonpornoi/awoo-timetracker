@@ -25,7 +25,9 @@ class MonthlyReports extends Component
     public function loadReport()
     {
         $date = Carbon::parse($this->month . '-01');
-        $this->report = MonthlyReport::firstWhere('month', $date->format('Y-m-d'));
+        $this->report = MonthlyReport::query()
+            ->whereDate('month', $date->format('Y-m-d'))
+            ->first();
 
         if ($this->report) {
             $this->snapshot = $this->report->snapshot ?: [];
@@ -70,15 +72,22 @@ class MonthlyReports extends Component
                 ->toArray(),
         ];
 
-        // Create or update report
-        $this->report = MonthlyReport::updateOrCreate(
-            attributes: ['month' => $date->format('Y-m-d')],
-            values: [
-                'snapshot' => $snapshot,
+        $report = MonthlyReport::query()
+            ->whereDate('month', $date->format('Y-m-d'))
+            ->first();
+
+        if ($report === null) {
+            $report = new MonthlyReport([
+                'month' => $date->format('Y-m-d'),
                 'created_by' => auth()->id(),
-                'status' => $this->report?->status ?? 'open', // keep status if already exists
-            ]
-        );
+                'status' => 'open',
+            ]);
+        }
+
+        $report->snapshot = $snapshot;
+        $report->save();
+
+        $this->report = $report->fresh();
         $this->snapshot = $snapshot;
     }
 

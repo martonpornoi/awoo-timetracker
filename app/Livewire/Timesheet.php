@@ -36,7 +36,9 @@ class Timesheet extends Component
     /** Computed: current month's report (if any) */
     public function getMonthlyReportProperty()
     {
-        return MonthlyReport::where('month', $this->month . '-01')->first();
+        return MonthlyReport::query()
+            ->whereDate('month', $this->month . '-01')
+            ->first();
     }
 
     /** Computed: is month locked? */
