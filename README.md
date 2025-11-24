@@ -106,6 +106,34 @@ php artisan migrate
 2. Terminal 1: `npm run dev` (Vite).
 3. Terminal 2: `php artisan serve`.
 
+### Demo Data
+
+After running migrations, populate the demo accounts/projects/time entries:
+
+```bash
+php artisan db:seed
+# or explicitly: php artisan db:seed --class=SuperUserSeeder
+```
+
+You’ll get:
+
+| Role      | Email               | Password  |
+|-----------|---------------------|-----------|
+| Super     | `super1@example.com` | `password` |
+| Super     | `super2@example.com` | `password` |
+| User      | `user1@example.com`  | `password` |
+| User      | `user2@example.com`  | `password` |
+
+Three projects (Alpha Portal, Beta Console, Legacy Archive) plus ~30 time entries are created so the UI looks busy when demoing admin reports or the timesheet.
+
+Need to reset your local DB? Use:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+This drops all tables, re-runs migrations, and repopulates the demo data above.
+
 ## Test
 
 Love yourself. Sleep without stress.
@@ -228,9 +256,3 @@ Be not afraid to reach out with ideas. Even if you can't make it come true on yo
 - Formatting and linting make the code seem like a nice picture on your wall.
 
 - Documentation updated if necessary.
-
-## Todo
-
-- Deployment rehearsal and DB documentation
-
-- Last refactor scan
