@@ -203,17 +203,33 @@ TBA
 
 Be not afraid to reach out with ideas. Even if you can't make it come true on your own, your enthusiasm will always be heard and prioritized.
 
+### GitHub Workflow
+
+1. `main` always mirrors what is deployed. Cut short-lived feature branches from `main` using the `type/short-description` pattern (for example `feature/report-csv-export` or `fix/timesheet-lock`).
+2. Keep your branch up to date by rebasing on top of `main` after every pull so the history that lands back on `main` is linear and conflict-free.
+3. Commit early and often, but keep each commit scoped to one concern; prefer imperative messages (`Add admin CSV guard`) and reference an issue number when possible.
+4. Before pushing, run `php artisan test`, `npm run build`, and `php artisan pint` (once Pint is configured) locally so GitHub Actions can mirror the same steps without surprise failures.
+5. Push the branch to origin, open or update the issue the work belongs to, and then open a pull request referencing that issue.
+
 ### Pull Request
 
-1) Create new branch.
+1) Create a new branch from `main` that follows the naming scheme above.
 
-2) Push your stuff on GitHub. Turn it into a Pull Request if you're feeling wild.
+2) Implement the change, add or update tests, and keep `README.md` or other docs in sync.
 
-3) Make sure all workflow items pass.
+3) Run the local verification checklist:
 
-4) Link your PR to an owner for review and wait for your fate.
+   - `php artisan test`
+   - `npm run build`
+   - Database migrations (if any) applied locally without errors
 
-5) Magic-magic (Ooh-Ooh). Magic-magic (Ooh-Ooh). Magic-magic-magic-magic~
+4) Push the branch and open a pull request on GitHub. Fill out the PR template, tick the “tests ran” checkbox, summarize impacts, and link any related issues.
+
+5) Request a reviewer (or assign the repo owner). GitHub Actions will run the same test/build jobs; expect ~2–3 minutes before statuses report back.
+
+6) Address review comments with follow-up commits (avoid force-pushing unless you are still in draft). Once the reviewer approves and checks are green, the PR is merged via “Squash and Merge” to keep history tidy.
+
+7) Magic-magic (Ooh-Ooh). Magic-magic (Ooh-Ooh). Magic-magic-magic-magic~
 
 ### Review Guide
 
@@ -229,9 +245,9 @@ Be not afraid to reach out with ideas. Even if you can't make it come true on yo
 
 ## Todo
 
-- [x] Create unit tests
+- [x] Create unit/feature tests
 
-- [ ] Create integration tests
+- [x] Create integration tests
 
 - [ ] Automated workflows on GitHub
 
