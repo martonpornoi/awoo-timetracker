@@ -1,12 +1,4 @@
 <div>
-    {{-- Debug/ping --}}
-    <div class="mb-4 p-2 border rounded">
-        Ping counter: {{ $pingCount }}
-        <button wire:click="ping" class="ml-2 px-2 py-1 border rounded">
-            Ping
-        </button>
-    </div>
-
     <div class="p-6 space-y-6">
 
         <div class="flex items-center justify-between">
