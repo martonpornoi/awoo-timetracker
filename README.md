@@ -205,15 +205,15 @@ Be not afraid to reach out with ideas. Even if you can't make it come true on yo
 
 ### GitHub Workflow
 
-1. `main` always mirrors what is deployed. Cut short-lived feature branches from `main` using the `type/short-description` pattern (for example `feature/report-csv-export` or `fix/timesheet-lock`).
-2. Keep your branch up to date by rebasing on top of `main` after every pull so the history that lands back on `main` is linear and conflict-free.
+1. `master` always mirrors what is deployed. Cut short-lived feature branches from `master` using the `type/short-description` pattern (for example `feature/report-csv-export` or `fix/timesheet-lock`).
+2. Keep your branch up to date by rebasing on top of `master` after every pull so the history that lands back on `master` is linear and conflict-free.
 3. Commit early and often, but keep each commit scoped to one concern; prefer imperative messages (`Add admin CSV guard`) and reference an issue number when possible.
 4. Before pushing, run `php artisan test`, `npm run build`, and `php artisan pint` (once Pint is configured) locally so GitHub Actions can mirror the same steps without surprise failures.
 5. Push the branch to origin, open or update the issue the work belongs to, and then open a pull request referencing that issue.
 
 ### Pull Request
 
-1) Create a new branch from `main` that follows the naming scheme above.
+1) Create a new branch from `master` that follows the naming scheme above.
 
 2) Implement the change, add or update tests, and keep `README.md` or other docs in sync.
 
