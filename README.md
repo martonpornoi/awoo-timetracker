@@ -56,7 +56,7 @@ https://nodejs.org/en/download
 
 ### MySQL
 
-Open .env in project and update these lines or add them:
+If you want to run against MySQL locally, open `.env` and update the defaults:
 
 ```makefile
 DB_CONNECTION=mysql
@@ -67,58 +67,52 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
+Prefer the file-based session driver in local/dev so you don't depend on the `sessions` table:
+
+```
+SESSION_DRIVER=file
+```
+
+You can switch back to `database` on staging/production once MySQL is available.
+
 ---
 
-### Checklist
-
-Open PowerShell
+### Getting Started
 
 ```powershell
-# --- Check if you have everything installed
+# 0) Clone and move to project root
+git clone git@github.com:martonpornoi/awoo-timetracker.git
+cd ./awoo-timetracker/timetracker
 
-php -v
-composer -V
-node -v
-npm -v
+# 1) Install PHP dependencies
+composer install
 
-# --- Further preparations that could come in handy
+# 2) Prepare environment
+cp .env.example .env
+php artisan key:generate
+# edit .env for DB / session driver as noted above
 
-# 0) Go to root folder of the repository
-cd ./awoo-timetracker
-
-# 1) Start Apache and MySQL on XAMPP control panel
-
-# 2) Install Livewire (also Alpine.js, required for Livewire)
-composer require livewire/livewire
-npm install alpinejs
+# 3) Install Node dependencies & build assets
 npm install
+npm run build
 
-# 3) Test DB connection
+# 4) Run database migrations (MySQL must be running if you use it)
 php artisan migrate
-
-# 4) Install Breeze (for Auth UI)
-composer require laravel/breeze --dev
-php artisan breeze:install livewire
-npm install
-
-# --- Everyday runs would require 3 things
-
-# 1) Start Apache and MySQL on XAMPP control panel
-
-# 2) Terminal 1
-npm run dev
-
-# 3) Terminal 2
-php artisan serve
 ```
+
+### Everyday Dev Servers
+
+1. Start Apache/MySQL from XAMPP (or run `php artisan serve` + `php artisan queue:listen` if you prefer artisan).
+2. Terminal 1: `npm run dev` (Vite).
+3. Terminal 2: `php artisan serve`.
 
 ## Test
 
 Love yourself. Sleep without stress.
 
-### Unit Test
+### Automated Tests
 
-This project uses Laravel’s built-in **PHPUnit** test framework. Tests focus on the core workflows of the TimeTracker system.
+This project uses Laravel's built-in **PHPUnit** test runner. Coverage focuses on feature/integration workflows (HTTP + Livewire + sqlite in memory), so `php artisan test` executes the full stack.
 
 ---
 
@@ -127,8 +121,8 @@ This project uses Laravel’s built-in **PHPUnit** test framework. Tests focus o
 ```bash
 # run all tests
 php artisan test
-# run a test file
-php artisan test tests/Feature/AdminProjectsTest.php
+# run a specific test class
+php artisan test tests/Feature/Admin/AdminAccessTest.php
 # run a filtered test
 php artisan test --filter="locks entries when month is closed"
 ```
@@ -191,29 +185,37 @@ TimeEntry::factory()->create([
 ]);
 ```
 
-### Integration Test
-
-TBA
-
-### Smoke Test
-
-TBA
-
 ## Contribution
 
 Be not afraid to reach out with ideas. Even if you can't make it come true on your own, your enthusiasm will always be heard and prioritized.
 
+### GitHub Workflow
+
+1. `master` always mirrors what is deployed. Cut short-lived feature branches from `master` using the `type/short-description` pattern (for example `feature/report-csv-export` or `fix/timesheet-lock`).
+2. Keep your branch up to date by rebasing on top of `master` after every pull so the history that lands back on `master` is linear and conflict-free.
+3. Commit early and often, but keep each commit scoped to one concern; prefer imperative messages (`Add admin CSV guard`) and reference an issue number when possible.
+4. Before pushing, run `php artisan test`, `npm run build`, and `php artisan pint` (once Pint is configured) locally so GitHub Actions can mirror the same steps without surprise failures.
+5. Push the branch to origin, open or update the issue the work belongs to, and then open a pull request referencing that issue.
+
 ### Pull Request
 
-1) Create new branch.
+1) Create a new branch from `master` that follows the naming scheme above.
 
-2) Push your stuff on GitHub. Turn it into a Pull Request if you're feeling wild.
+2) Implement the change, add or update tests, and keep `README.md` or other docs in sync.
 
-3) Make sure all workflow items pass.
+3) Run the local verification checklist:
 
-4) Link your PR to an owner for review and wait for your fate.
+   - `php artisan test`
+   - `npm run build`
+   - Database migrations (if any) applied locally without errors
 
-5) Magic-magic (Ooh-Ooh). Magic-magic (Ooh-Ooh). Magic-magic-magic-magic~
+4) Push the branch and open a pull request on GitHub. Fill out the PR template, tick the “tests ran” checkbox, summarize impacts, and link any related issues.
+
+5) Request a reviewer (or assign the repo owner). GitHub Actions will run the same test/build jobs; expect ~2–3 minutes before statuses report back.
+
+6) Address review comments with follow-up commits (avoid force-pushing unless you are still in draft). Once the reviewer approves and checks are green, the PR is merged via “Squash and Merge” to keep history tidy.
+
+7) Magic-magic (Ooh-Ooh). Magic-magic (Ooh-Ooh). Magic-magic-magic-magic~
 
 ### Review Guide
 
@@ -229,12 +231,6 @@ Be not afraid to reach out with ideas. Even if you can't make it come true on yo
 
 ## Todo
 
-- [x] Create unit tests
+- Deployment rehearsal and DB documentation
 
-- [ ] Create integration tests
-
-- [ ] Automated workflows on GitHub
-
-- [ ] Deployment rehearsal and DB documentation
-
-- [ ] Last refactor scan
+- Last refactor scan
